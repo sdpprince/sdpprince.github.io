@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			overflow: hidden;	
+		}
+		#back{
+			width: 1920px;
+			height: 1080px;
+			background-color: #F39C12;
+			background-image: url(img/result.png);
+			background-repeat: no-repeat;
+			background-position: 35% 30%;
+		}
+		#box{
+			padding: 10px;
+			position: absolute;
+			top: 0px;
+			left: 88.9%;
+			background-color: #cccccc;
+			border: 2px solid #000000;
+			box-shadow: 3px 3px 12px 3px #000000;
+			border-radius: 20px;
+			user-select: none;
+			text-align: center;
+			font-weight: 700;
+			background: linear-gradient(to left,hotpink,blue,green,red);
+		}
+		#divdrag{
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 40px;
+
+		}
+		#divdrag:hover{
+			cursor: move;
+		}
+		
+		canvas:hover{
+			/* crosshair十字架 */
+			cursor: pointer;
+		}
+		
+		#cursor1{
+			cursor: pointer;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			/* background: rgba(0,0,0,.3); */
+			background-color: #74807d;
+			opacity: .6;
+			display: none;
+			
+		}
+		button{
+			width: 100px;
+			height: 50px;
+			border-radius: 50%;
+			
+		}
+		button,input{
+			box-shadow: 0 0 20px deepskyblue;
+			border: 1px solid #00BFFF;
+		}
+	</style>
+	<body>
+		<div id="back">
+			<div id="cursor1"></div>
+			<canvas width="1920" height="1080" id="gua"></canvas>
+			<div id="box">
+				
+				<p id="divdrag"><h2>绘画工具栏</h2></p>
+				<hr />
+				<br />
+				<span id="pentxt">画笔颜色：</span>
+				<input type="color" id="pens" />
+				<br /><br /><hr /><br />
+				<span id="penssizetxt">画笔大小：</span><span id="penssize2val">20</span>
+				<br />
+				<input type="range" id="penssize2" value="20" />
+				<br /><br /><hr />
+				<br />
+				<button id="newpanel">新建画板</button>
+				<br /><br /><hr />
+				<br />
+				<button id="rubber">橡皮擦</button>
+				<br /><br /><hr />
+				<br />
+				<a download="" id="aDem" style="display: none;">a下载</a>
+				<button class="btn" id="dwonload">下载图片</button>
+			</div>
+
+		</div>
+
+		<script>
+			var cursor1 = document.querySelector('#cursor1')//鼠标画笔
+			var pens = document.querySelector('#pens') //画笔颜色
+			var penssize2 = document.querySelector('#penssize2') //画笔大小
+			var penssize2val = document.querySelector('#penssize2val') //画笔大小值
+			var newpanel = document.querySelector('#newpanel') //新建画板
+			var canvas = document.querySelector('#gua')
+			var context = canvas.getContext('2d')
+			context.fillStyle = "white"
+			context.fillRect(0, 0, 1920, 1080)
+
+//点击新建一个画板
+			newpanel.addEventListener('click', function() {
+				var canvas = document.querySelector('#gua')
+				// canvas.style.width=200+'px'
+				// canvas.style.height=200+'px'
+				// canvas.style.margin='auto'
+				var context = canvas.getContext('2d')
+				var backcolorse=prompt("请输入画板背景颜色")
+				context.fillStyle = backcolorse
+				context.fillRect(0, 0, 1920, 1080)
+				
+				
+			})
+			
+//绘制路径
+			function banner(e){
+				context.beginPath()
+				context.arc(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop, penssize2.value, 0, Math.PI * 2)
+				context.closePath()
+				context.fillStyle = pens.value
+				context.fill()
+				
+				
+			}
+			
+//移动画笔绘画
+			// context.globalCompositeOperation='destination-out'
+			canvas.addEventListener('mousedown', function(e) {
+				banner(e)//调用绘制路径
+				canvas.addEventListener('mousemove', fn)
+				canvas.addEventListener('mouseup', function() {
+					canvas.removeEventListener('mousemove', fn)
+				})
+				
+				
+			})
+//(mousemove)鼠标移动函数
+			function fn(e) {
+				banner(e)//调用绘制路径
+				
+			}
+			
+//监测画笔大小值的变化
+			penssize2.addEventListener('change', function() {
+				penssize2val.innerHTML = penssize2.value
+			})
+//清除颜色
+			var rubber = document.querySelector('#rubber')
+			canvas.addEventListener('mousedown',function(e){
+			rubber.addEventListener('click',function(e){
+				
+					//吸取颜色
+					var c = context.getImageData(e.pageX, e.pageY, 1, 1).data;
+					var red = c[0];
+					var green = c[1];
+					var blue = c[2];
+					//值的转换
+					function ColorToHex(color) {
+					  var hexadecimal = color.toString(16);
+					  return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
+					}
+					function ConvertRGBtoHex(red, green, blue) {
+					  return "#" + ColorToHex(red) + ColorToHex(green) + ColorToHex(blue);
+					}
+					// console.log(ConvertRGBtoHex(red, green, blue));
+					pens.value = ConvertRGBtoHex(red, green, blue)//赋值给画笔
+				})
+				
+            
+					
+			})
+//拖动工具栏
+			var box = document.querySelector('#box')
+			var divdrag = document.querySelector('#divdrag')
+			var startX = 0;
+			var startY = 0;
+			var x = 0;
+			var x = 0;
+			divdrag.addEventListener('mousedown', function(e) {
+				
+				
+				startX = e.clientX
+				startY = e.clientY
+				x = box.offsetLeft
+				y = box.offsetTop
+				divdrag.addEventListener('mousemove', fn2)
+				divdrag.addEventListener('mouseup', function() {
+					divdrag.removeEventListener('mousemove', fn2)
+				})
+			})
+			function fn2(e) {
+				var moveX = e.clientX - startX
+				var moveY = e.clientY - startY
+				box.style.left = moveX + x + 'px'
+				box.style.top = moveY + y + 'px'
+			}
+			
+//下载			
+				var dwonloadBtn = document.querySelector('#dwonload')
+				dwonloadBtn.addEventListener('click',function(){
+					var url = canvas.toDataURL() //获取图片地址
+					// console.log(url);
+					
+					var aDem = document.querySelector('#aDem')
+					aDem.setAttribute('href',url)
+					aDem.click()
+				})
+//鼠标绘画
+				canvas.addEventListener('mousemove',function(e){
+					cursor1.classList='cursor1'
+					cursor1.style.left=(e.pageX+5)+'px';
+					cursor1.style.top=(e.pageY+5)+"px";
+					cursor1.style.width =penssize2.value*2+'px';
+					cursor1.style.height =penssize2.value*2+'px';
+					cursor1.style.display='block'
+				})
+		</script>
+	</body>
+</html>
