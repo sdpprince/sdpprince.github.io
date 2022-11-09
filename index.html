@@ -1,235 +1,500 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-	<style>
-		*{
-			margin: 0;
-			padding: 0;
-			overflow: hidden;	
-		}
-		#back{
-			width: 1920px;
-			height: 1080px;
-			background-color: #F39C12;
-			background-image: url(img/result.png);
-			background-repeat: no-repeat;
-			background-position: 35% 30%;
-		}
-		#box{
-			padding: 10px;
-			position: absolute;
-			top: 0px;
-			left: 88.9%;
-			background-color: #cccccc;
-			border: 2px solid #000000;
-			box-shadow: 3px 3px 12px 3px #000000;
-			border-radius: 20px;
-			user-select: none;
-			text-align: center;
-			font-weight: 700;
-			background: linear-gradient(to left,hotpink,blue,green,red);
-		}
-		#divdrag{
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			width: 100%;
-			height: 40px;
+<head>
+<meta charset="utf-8">
+<meta name="description" content="京东JD.COM-专业的综合网上购物商城,销售家电、数码通讯、电脑、
+家居百货、服装服饰、母婴、图书、食品等数万个品牌优质商品.便捷、诚信的服务，为您提供愉悦的网上购物
+体验!" />
+<meta name= " keywords" content="网上购物,网上商城,手机,笔记本,电脑,MP3,CD,VCD,DV,相机,数码,配 件,手表,存储卡,京东" />
+<title>京东(JD.COM)-综合网购首选-正品低价、品质保障、配送及时、轻松购物！</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+  <link rel="stylesheet" href="css/common.css" type="text/css"/>
+  <link rel="stylesheet" href="css/base.css" type="text/css"/>
+  <link rel="stylesheet" href="css/js.css" type="text/css" />
+  
+  <!-- <script src="js/animate.js"></script> -->
 
-		}
-		#divdrag:hover{
-			cursor: move;
-		}
-		
-		canvas:hover{
-			/* crosshair十字架 */
-			cursor: pointer;
-		}
-		
-		#cursor1{
-			cursor: pointer;
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			width: 40px;
-			height: 40px;
-			border-radius: 50%;
-			/* background: rgba(0,0,0,.3); */
-			background-color: #74807d;
-			opacity: .6;
-			display: none;
-			
-		}
-		button{
-			width: 100px;
-			height: 50px;
-			border-radius: 50%;
-			
-		}
-		button,input{
-			box-shadow: 0 0 20px deepskyblue;
-			border: 1px solid #00BFFF;
-		}
-	</style>
-	<body>
-		<div id="back">
-			<div id="cursor1"></div>
-			<canvas width="1920" height="1080" id="gua"></canvas>
-			<div id="box">
-				
-				<p id="divdrag"><h2>绘画工具栏</h2></p>
-				<hr />
-				<br />
-				<span id="pentxt">画笔颜色：</span>
-				<input type="color" id="pens" />
-				<br /><br /><hr /><br />
-				<span id="penssizetxt">画笔大小：</span><span id="penssize2val">20</span>
-				<br />
-				<input type="range" id="penssize2" value="20" />
-				<br /><br /><hr />
-				<br />
-				<button id="newpanel">新建画板</button>
-				<br /><br /><hr />
-				<br />
-				<button id="rubber">橡皮擦</button>
-				<br /><br /><hr />
-				<br />
-				<a download="" id="aDem" style="display: none;">a下载</a>
-				<button class="btn" id="dwonload">下载图片</button>
-			</div>
+</head>
 
-		</div>
-
-		<script>
-			var cursor1 = document.querySelector('#cursor1')//鼠标画笔
-			var pens = document.querySelector('#pens') //画笔颜色
-			var penssize2 = document.querySelector('#penssize2') //画笔大小
-			var penssize2val = document.querySelector('#penssize2val') //画笔大小值
-			var newpanel = document.querySelector('#newpanel') //新建画板
-			var canvas = document.querySelector('#gua')
-			var context = canvas.getContext('2d')
-			context.fillStyle = "white"
-			context.fillRect(0, 0, 1920, 1080)
-
-//点击新建一个画板
-			newpanel.addEventListener('click', function() {
-				var canvas = document.querySelector('#gua')
-				// canvas.style.width=200+'px'
-				// canvas.style.height=200+'px'
-				// canvas.style.margin='auto'
-				var context = canvas.getContext('2d')
-				var backcolorse=prompt("请输入画板背景颜色")
-				context.fillStyle = backcolorse
-				context.fillRect(0, 0, 1920, 1080)
-				
-				
-			})
-			
-//绘制路径
-			function banner(e){
-				context.beginPath()
-				context.arc(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop, penssize2.value, 0, Math.PI * 2)
-				context.closePath()
-				context.fillStyle = pens.value
-				context.fill()
-				
-				
+<style>
+	body{
+		margin: 0;
+		padding: 0;
+	}
+	.footer{
+		position: absolute;
+		margin: auto;
+		width: 1523px;
+	}
+	
+	.focus{
+		position: relative;
+		border: 1px red solid;
+		padding: 0;
+	}
+	.focus_ul{
+		position: absolute;
+		top: -15px;
+		left: -45px;
+		width: 600%;
+		list-style: none !important;
+	}
+	.focus_ul li img{
+		width: 100% !important;
+		height: 100% !important;
+	}
+	#span-left,#span-right{
+		position: absolute;
+		top: 50%;
+		width: 5%;
+		height: 10%;
+		margin-top: -2.5%;
+		background-color: #ccc;
+		font-size: 2em;
+		z-index: 999;
+		text-align: center;
+		opacity: .8;
+		cursor: pointer;
+	}
+	#span-left{
+		left: 0;
+		border-radius:0 50% 50% 0;
+	}
+	#span-right{
+		right: 0;
+		border-radius: 50% 0 0 50%;
+	}
+	.circle{
+		position: absolute;
+		bottom: 0;
+		left: 25% !important;
+	}
+	.current{
+				background-color: orange !important;
+				opacity: 1 !important;
 			}
-			
-//移动画笔绘画
-			// context.globalCompositeOperation='destination-out'
-			canvas.addEventListener('mousedown', function(e) {
-				banner(e)//调用绘制路径
-				canvas.addEventListener('mousemove', fn)
-				canvas.addEventListener('mouseup', function() {
-					canvas.removeEventListener('mousemove', fn)
-				})
-				
-				
-			})
-//(mousemove)鼠标移动函数
-			function fn(e) {
-				banner(e)//调用绘制路径
-				
+			.box_bd img,.box_bc img{
+				border: 1px #ccc solid;
 			}
+			.box_bd img:hover,.box_bc img:hover,.recom_bd img:hover,tbody td:hover{
+				transform: scale(1.01);
+				box-shadow: 1px 1px 3px 3px #55ffff;
+			}
+			.news-bd ul{
+				margin: 0;
+				padding: 0;
+				width: 83%;
+				margin-left: 15%;
+			}
+			.news-bd ul li{
+				height: 30px;
+				border: 1px red solid;
+				margin-top: 10px;
+			}
+			.news-bd ul li:hover,.dropdown>.dd ul li:hover{
+				background-color: lightskyblue;
+				color: #000000 !important;
+				cursor: pointer;
+			}
+	
+</style>
+<body>
+      <div class="shortcut">
+      	<div class="banxin">
+      		<div class="a1">
+      			<a href="#" class="b1">品优购欢迎您！</a>
+      			<a href="#" class="b1">请登录</a>
+      			
+      			<a href="register.html" class="b2">免费注册</a>
+      		</div>
+      		<div class="a2">
 			
-//监测画笔大小值的变化
-			penssize2.addEventListener('change', function() {
-				penssize2val.innerHTML = penssize2.value
-			})
-//清除颜色
-			var rubber = document.querySelector('#rubber')
-			canvas.addEventListener('mousedown',function(e){
-			rubber.addEventListener('click',function(e){
-				
-					//吸取颜色
-					var c = context.getImageData(e.pageX, e.pageY, 1, 1).data;
-					var red = c[0];
-					var green = c[1];
-					var blue = c[2];
-					//值的转换
-					function ColorToHex(color) {
-					  var hexadecimal = color.toString(16);
-					  return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
-					}
-					function ConvertRGBtoHex(red, green, blue) {
-					  return "#" + ColorToHex(red) + ColorToHex(green) + ColorToHex(blue);
-					}
-					// console.log(ConvertRGBtoHex(red, green, blue));
-					pens.value = ConvertRGBtoHex(red, green, blue)//赋值给画笔
-				})
-				
-            
+					<a href="#" class="b3">我的订单</a>
+      				  <span class="b3">|</span>
+      				<a href="#" class="b3">我的品优购<span>&or;</span></a>
+      				  <span class="b3">|</span>
+      				<a href="#" class="b3">品优购会员</a>
+      				  <span class="b3">|</span>
+      				<a href="#" class="b3">企业采购</a>
+      				  <span class="b3">|</span>
+      				<a href="#" class="b3">关注品优购<span>&or;</span></a>
+      				  <span class="b3">|</span>
+      				<a href="#"  class="b3">客户服务<span>&or;</span></a>
+      				  <span class="b3">|</span>
+      				<a href="#"  class="b3">网站导航<span>&or;</span></a>      		
+      		</div>
+      	</div>
+      </div>
+
+     
+           
+      <div class="header">
+		  <div class="logo"><h1><a href="index.html" title=""><img src="images/logo.png"></a>品优购</h1></div>
+      	<div class="search">
+      		<input type="search" name="search" placeholder="语言开发"/>
+      		<button>搜索</button>
+      	</div>
+      	<div class="hotwords">
+      		<a href="#" class="b4">优惠购首发</a>
+      		<a href="#" class="b3">亿元优惠</a>
+      		<a href="#" class="b3">9.9元团购</a>
+      		<a href="#" class="b3">每满99减30</a>
+      		<a href="#" class="b3">办公用品</a>
+      		<a href="#" class="b3">电脑</a>
+      		<a href="#" class="b3">通信</a>
+      	</div>
+      	<div class="shopcar">
+      	<div class="right">
+      	<img src="images/Snipaste_2021-01-30_10-55-35.png"><a href=""><a href="" class="b3">我的购物车</a><span>&gt;</span></a>
+      	<div class="count"><count>8</count></div>
+      	</div>
+      	</div>   	
+      </div>
+      
+      <div class="boxkong1"></div>
+      <div class="hr"></div>
+      <div class="nav">
+      
+      	<div class="dropdown">
+      		<div class="dt">全部商品分类</div>
+      		
+      		<div class="dd">
+      			<ul>
+      				<li><a href="#"><span>家用电器</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>手机</span><span>数码</span><span>通信</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>电脑</span><span>办公</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>家居、</span><span>家具、</span><span>家装、</span><span>厨具</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="list.html"><span>男装、</span><span>女装、</span><span>童装、</span><span>内衣</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>个户化妆、</span><span>清洁用品、</span><span>宠物</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>鞋靴、</span><span>箱包、</span><span>珠宝、</span><span>奢侈品</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>运动户外、</span><span>钟表</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>汽车、</span><span>汽车用品</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>母婴、</span><span>玩具乐器</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>食品、</span><span>酒类、</span><span>生鲜、</span><span>特产</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>医药保健</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>图书、</span><span>音像、</span><span>电子书</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>彩票、</span><span>旅行、</span><span>充值、</span><span>票务</span><span class="b9">&gt;</span></a></li>
+      				<li><a href="#"><span>理财、</span><span>众筹、</span><span>白条、</span><span>保险</span><span class="b9">&gt;</span></a></li>
+      			</ul>
+      		</div>
+      	</div>
+      	<div class="navitems">
+      		<div class="ab">
+      			<a href="#" class="b5">服装城</a>
+      			<a href="#" class="b5">服装城</a>
+      			<a href="#" class="b5">服装城</a>
+      			<a href="#" class="b5">服装城</a>
+      			<a href="#" class="b5">服装城</a>
+      			<a href="#" class="b5">服装城</a>
+      			<a href="#" class="b5">服装城</a>
+      			<a href="#" class="b5">服装城</a>
+      		</div>
+      		</div>
+      		
+      		
+      		<div class="main">
+      			<div class="focus">
+					<span id="span-left">◁</span>
+					<span id="span-right">▷</span>
 					
-			})
-//拖动工具栏
-			var box = document.querySelector('#box')
-			var divdrag = document.querySelector('#divdrag')
-			var startX = 0;
-			var startY = 0;
-			var x = 0;
-			var x = 0;
-			divdrag.addEventListener('mousedown', function(e) {
-				
-				
-				startX = e.clientX
-				startY = e.clientY
-				x = box.offsetLeft
-				y = box.offsetTop
-				divdrag.addEventListener('mousemove', fn2)
-				divdrag.addEventListener('mouseup', function() {
-					divdrag.removeEventListener('mousemove', fn2)
-				})
-			})
-			function fn2(e) {
-				var moveX = e.clientX - startX
-				var moveY = e.clientY - startY
-				box.style.left = moveX + x + 'px'
-				box.style.top = moveY + y + 'px'
-			}
-			
-//下载			
-				var dwonloadBtn = document.querySelector('#dwonload')
-				dwonloadBtn.addEventListener('click',function(){
-					var url = canvas.toDataURL() //获取图片地址
-					// console.log(url);
 					
-					var aDem = document.querySelector('#aDem')
-					aDem.setAttribute('href',url)
-					aDem.click()
-				})
-//鼠标绘画
-				canvas.addEventListener('mousemove',function(e){
-					cursor1.classList='cursor1'
-					cursor1.style.left=(e.pageX+5)+'px';
-					cursor1.style.top=(e.pageY+5)+"px";
-					cursor1.style.width =penssize2.value*2+'px';
-					cursor1.style.height =penssize2.value*2+'px';
-					cursor1.style.display='block'
-				})
-		</script>
-	</body>
+				<ul class="focus_ul" style="width: 600%;">
+					<li><img src="images/focus1.png"></li>
+					<li><img src="images/recom_03.jpg"></li>
+					<li><img src="images/floor-1-1.png"></li>
+					<li><img src="images/floor-1-b01.png"></li>
+					<li><img src="images/focus1.png"></li>
+					<li><img src="images/focus1.png"></li>
+				</ul>
+				
+				<ol class="circle">
+				</ol>
+				
+				
+				</div>
+      			<div class="newsflash">
+      				<div class="news">
+      					<div class="news-hd"><span class="f1">品优购快报</span><a>更多<span>&gt;</span></a></div>
+      					<hr/>
+      					<div class="news-bd">
+      						<ul>
+      							<li><a><span class="f2">「特惠」</span><span class="f3">备战开学季 全民半价购数码</span></a></li>
+      							<li><a><span class="f2">「公告」</span><span class="f3">品优稳占家电网购泪六成份额</span></a></li>
+      							<li><a><span class="f2">「特惠」</span><span class="f3">百元中秋全品类礼券限量领</span></a></li>
+      							<li><a><span class="f2">「公告」</span><span class="f3">上品优生鲜 享阳澄湖大闸蟹</span></a></li>
+      							<li><a><span class="f2">「特惠」</span><span class="f3">每日享折扣品优品质游</span></a></li>
+      						</ul>
+      					</div>
+      				</div>
+      				<div class="lifeservice">
+      					<table class="tu1" border="1" bordercolor="#DADADA" width="250px" height="209">
+      					<tr>
+							<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      					</tr>
+      					<tr>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      					</tr>
+      					<tr>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      						<td><a><img src="images/Snipaste_2021-01-31_16-54-16.png"/><span>话费</span></a></td>
+      					</tr>
+      					</table>
+      				</div>
+      				<div class="bargain"><img src="images/bargain.png"/></div>
+      			</div>
+      		</div>
+      	
+      </div>
+      
+      <div class="boxkong2"></div>
+      <div class="recom">
+      	  <div class="recom_hd"><img src="images/Snipaste_2021-01-31_22-50-38.png"><span>今日推荐</span></div>
+      	  <div class="recom_bd">
+      	  	<a href=""><img src="images/recom_03.jpg"/></a>
+      	  	<a href=""><img src="images/recom_03.jpg"/></a>
+      	  	<a href=""><img src="images/recom_03.jpg"/></a>
+      	  	<a href=""><img src="images/recom_03.jpg"/></a>
+      	  </div>
+      </div>
+      
+      
+      <div class="box_hd">
+		  <div class="b6"><h3>家用电器</h3></div>
+      	<div class=" tab_list">
+      		<ul>
+				<li class="b8"><a>热门</a></li>
+				<li><a>大家电</a></li>
+				<li><a>生活电器</a></li>
+				<li><a>周围电器</a></li>
+				<li><a>个护健康</a></li>
+				<li><a>应手电器</a></li>
+				<li><a>空气/净水</a></li>
+				<li><a>新奇特</a></li>
+				<li><a>高端电器</a></li>
+      		</ul>
+      	</div>
+      </div>
+      <div class="box_bd">
+      	<ul class="tab_content1">
+      		<li class="b7">
+      			<ul class="b8">
+					<li><a>节能补贴</a></li>
+					<li><a>空气净化器</a></li>
+					<li><a>液氧洗衣机</a></li>
+      			</ul>
+      			<ul class="b8">
+					<li><a>4k电视</a></li>
+					<li><a>IH电饭煲</a></li>
+					<li><a>电热水器</a></li>
+      			</ul>
+      		</li>
+      		<li><img src="images/floor-1-1.png"/></li>
+      	</ul>
+      	<ul class="tab_content2">
+      		<img src="images/floor-1-b01.png"/>
+      	</ul>
+      	<ul class="tab_content3">
+      		<li><img src="images/floor-1-2.png"/></li>
+      		<li><img src="images/floor-1-3.png"/></li>
+      	</ul>
+      	<ul class="tab_content4">
+      		<img src="images/floor-1-4.png"/>
+      	</ul>
+      	<ul class="tab_content5">
+      		<li><img src="images/floor-1-5.png"/></li>
+      		<li><img src="images/floor-1-6.png"/></li>
+      	</ul>
+      </div>
+      
+       <div class="box_hd">
+		  <div class="b6"><h3>手机通讯</h3></div>
+      	<div class=" tab_list">
+      		<ul>
+				<li class="b8"><a>热门</a></li>
+				<li><a>大家电</a></li>
+				<li><a>生活电器</a></li>
+				<li><a>周围电器</a></li>
+				<li><a>个护健康</a></li>
+				<li><a>应手电器</a></li>
+				<li><a>空气/净水</a></li>
+				<li><a>新奇特</a></li>
+				<li><a>高端电器</a></li>
+      		</ul>
+      	</div>
+      </div>
+      <div class="box_bc">
+      	<ul class="tab_content1">
+      		<li class="b7">
+      			<ul class="b8">
+					<li><a>节能补贴</a></li>
+					<li><a>空气净化器</a></li>
+					<li><a>液氧洗衣机</a></li>
+      			</ul>
+      			<ul class="b8">
+					<li><a>4k电视</a></li>
+					<li><a>IH电饭煲</a></li>
+					<li><a>电热水器</a></li>
+      			</ul>
+      		</li>
+      		<li><img src="images/floor-1-1.png"/></li>
+      	</ul>
+      	<ul class="tab_content2">
+      		<img src="images/floor-1-b01.png"/>
+      	</ul>
+      	<ul class="tab_content3">
+      		<li><img src="images/floor-1-2.png"/></li>
+      		<li><img src="images/floor-1-3.png"/></li>
+      	</ul>
+      	<ul class="tab_content4">
+      		<img src="images/floor-1-4.png"/>
+      	</ul>
+      	<ul class="tab_content5">
+      		<li><img src="images/floor-1-5.png"/></li>
+      		<li><img src="images/floor-1-6.png"/></li>
+      	</ul>
+      </div>
+      
+      
+      <div class="footer">
+      <div class="footer1">
+      	<div class="mod_service">
+      		<ul class="service1">
+      			<li><img src="images/Snipaste_2021-02-01_15-14-25.png"/>
+      			
+      			<p>正品保障</p>
+      			<p>正品保障，提供发票</p>
+      			
+      		    </li>
+      			<li><img src="images/Snipaste_2021-02-01_15-16-47.png"/>
+      			<p>正品保障</p>
+      			<p>正品保障，提供发票</p>
+      			</li>
+      			<li><img src="images/Snipaste_2021-02-01_15-17-19.png"/>
+      			<p>正品保障</p>
+      			<p>正品保障，提供发票</p>
+      			</li>
+      			<li><img src="images/Snipaste_2021-02-01_15-17-45.png"/>
+      			<p>正品保障</p>
+      			<p>正品保障，提供发票</p>
+      			</li>
+      			<li><img src="images/Snipaste_2021-02-01_15-18-08.png"/>
+      		   <p>正品保障</p>
+      			<p>正品保障，提供发票</p>
+      			</li>
+      		</ul>
+      	</div>
+      	<div class="mod_help">
+      		<ul class="help2">
+      		    <li class="help1">服务指南</li>
+      			<li class="help3">购物流程</li>
+      			<li class="help3">会员介绍</li>
+      			<li class="help3">生活旅行/团购</li>
+      			<li class="help3">常见问题</li>
+      			<li class="help3">大家电</li>
+      			<li class="help3">联系客服</li>
+      		</ul>
+      		
+      		<ul class="help2">
+      		    <li class="help1">服务指南</li>
+                <li class="help3">购物流程</li>
+      			<li class="help3">会员介绍</li>
+      			<li class="help3">生活旅行/团购</li>
+      			<li class="help3">常见问题</li>
+      			<li class="help3">大家电</li>
+      			<li class="help3">联系客服</li>
+      		</ul>
+      		
+      		
+      		<ul class="help2">
+      		    <li class="help1">服务指南</li>
+      			<li class="help3">购物流程</li>
+      			<li class="help3">会员介绍</li>
+      			<li class="help3">生活旅行/团购</li>
+      			<li class="help3">常见问题</li>
+      			<li class="help3">大家电</li>
+      			<li class="help3">联系客服</li>
+      		</ul>
+      		
+      		<ul class="help2">
+      		   <li class="help1">服务指南</li>
+      			<li class="help3">购物流程</li>
+      			<li class="help3">会员介绍</li>
+      			<li class="help3">生活旅行/团购</li>
+      			<li class="help3">常见问题</li>
+      			<li class="help3">大家电</li>
+      			<li class="help3">联系客服</li>
+      		</ul>
+      		
+      		
+      		<ul class="help2">
+      		    <li class="help1">服务指南</li>
+      			<li class="help3">购物流程</li>
+      			<li class="help3">会员介绍</li>
+      			<li class="help3">生活旅行/团购</li>
+      			<li class="help3">常见问题</li>
+      			<li class="help3">大家电</li>
+      			<li class="help3">联系客服</li>
+      		</ul>
+      	    
+      	    <ul class="help2">
+      	    	<li class="help1">帮助中心</li>
+      	    	<li><img src="images/wx_cz.jpg"></li>
+      	    	<li class="help3">品优购客户端</li>
+      	    </ul>
+      		
+      	</div>
+      	<div class="mod_copyright">
+      		<ul>
+      			<li>关于我们</li>
+      		    <li>|</li>
+      			
+      			<li>联系我们</li>
+      		    <li>|</li>
+      			
+      			<li>联系客服</li>
+      		    <li>|</li>
+      			
+      			<li>商家入驻</li>
+      		    <li>|</li>
+      			
+      			<li>营销中心</li>
+      		    <li>|</li>
+      			
+      			<li>手机品优购</li>
+      		    <li>|</li>
+      			
+      			<li>友情链接</li>
+      		    <li>|</li>
+      			
+      			<li>销售联盟</li>
+      		    <li>|</li>
+      			
+      			<li>品优购社区</li>
+      		    <li>|</li>
+      			
+      			<li>品优购公益</li>
+      		    <li>|</li>
+      			
+      			<li>English Site</li>
+      			<li>|</li>
+      			
+      			<li>Contact U</li>
+      		</ul>
+      		<p class="p1">地址：北京市昌平区建材城西路金燕龙办公楼一层 邮编 ：100096 电话 ：400-618-4000 传真 ：010-82935100 邮编：zhanghj+itcast.cn</p>
+      		<p class="p2">京ICP备08001421号京公网安备110108007702</p>
+      	</div>
+      </div>
+      	
+      </div>
+	  
+	    <script src="js/new1.js"></script>
+</body>
 </html>
